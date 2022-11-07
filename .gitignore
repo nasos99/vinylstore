@@ -1,23 +1,53 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+public class vinylrecords implements Serializable{
+    
+    private int vinylId;
+    private String vinylName;
+    private String author;
+    private String pubDate;
+    private double price;
+    private int store;
+    public int getvinylId() {
+        return vinylId;
+    }
+    public void setvinylId(int vinylId) {
+        this.vinylId = vinylId;
+    }
+    public String getvinylName() {
+        return vinylName;
+    }
+    public void setvinylName(String vinylName) {
+        this.vinylName = vinylName;
+    }
+    public String getAuthor() {
+        return author;
+    }
+    public String getPubDate() {
+        return pubDate;
+    }
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice() {
+        this.price = price;
+    }
+    public int getStore() { 
+        return store;
+    }
+    public void setStore(int store) {
+        this.store = store;
+    }
+    public vinylrecords(int vinylId, String vinylName, String author, String pubDate,
+            double price, int store) {
+        super();
+        this.vinylId = vinylId;
+        this.vinylName = vinylName;
+        this.author = author;
+        this.pubDate = pubDate;
+        this.price = price;
+        this.store = store;
+    }
+   
+}
