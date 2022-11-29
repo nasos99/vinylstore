@@ -1,0 +1,391 @@
+public class Genre extends javax.swing.JFrame {
+
+   
+    String genre, ID, Genre, sql;
+    
+    int selectedIndex=0;
+    
+    
+    java.sql.Connection conn = null;
+    Statement st = null;
+    ResultSet rs = null;
+    PreparedStatement ps;
+        
+    String msAccDB = "vinylstore.accdb"; // path to the DB file
+    String dbURL = "jdbc:ucanaccess://" + msAccDB;//Database url
+    
+    
+    public Genre() {
+        initComponents();
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+        updateTable();
+    }
+
+    
+    private void addGenre() {
+        genre=nameofgenre.getText();
+        
+        
+        System.out.println("Genre Name: "+genre);
+        
+        
+        try {
+            //Create and get connection using DriverManager class
+            conn = DriverManager.getConnection(dbURL);
+
+            //Creating JDBC Statement
+            st = conn.createStatement();
+
+            // Step 2.C: Executing SQL &amp; retrieve data into ResultSet
+             
+            sql = "INSERT INTO MusicStyle (Genre) VALUES (?)";
+            
+            ps = conn.prepareStatement(sql);
+            
+            ps.setString(1, genre);
+           
+            ps.executeUpdate();
+            
+            ps.close();
+            st.close();
+            conn.close();
+            System.out.println("data was inserted");
+            
+            nameofgenre.setText("");
+            
+            updateTable();
+        }
+        catch(SQLException sqlex){
+            System.err.println(sqlex.getMessage());
+        }
+        
+    }
+            
+    private void updateTable(){
+        
+        try {
+            //Create and get connection using DriverManager class
+            conn = DriverManager.getConnection(dbURL);
+            //Creating JDBC Statement
+            st = conn.createStatement();
+            
+            sql = "SELECT * FROM MusicStyle";
+            rs = st.executeQuery(sql);//execute the statement
+            
+            DefaultTableModel model = (DefaultTableModel)MusicStyle.getModel();
+            
+            model.setRowCount(0);
+         
+            if(rs.next()){
+                
+                do{
+                    ID = rs.getString("ID");
+                    Genre = rs.getString("Genre");
+                
+                    model.addRow(new Object[]{ID,Genre});
+                
+                }while(rs.next());
+                
+            }
+            
+            rs.close();
+            st.close();
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }        
+      
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        nameofgenre = new javax.swing.JTextField();
+        deleteButton = new javax.swing.JButton();
+        editButton = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        MusicStyle = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 102));
+
+        jLabel15.setFont(new java.awt.Font("Raleway Black", 0, 48)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Vinyl Store");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(175, 175, 175)
+                .addComponent(jLabel15)
+                .addContainerGap(176, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel15)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        nameofgenre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameofgenreActionPerformed(evt);
+            }
+        });
+
+        deleteButton.setText("delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        editButton.setText("edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+
+        MusicStyle.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Genre"
+            }
+        ));
+        MusicStyle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MusicStyleMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(MusicStyle);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(nameofgenre, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(addButton)
+                        .addGap(12, 12, 12)
+                        .addComponent(editButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deleteButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameofgenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addButton)
+                    .addComponent(editButton)
+                    .addComponent(deleteButton))
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void nameofgenreActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        addGenre();
+    }                                           
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        addGenre();
+    }                                         
+
+    private void MusicStyleMouseClicked(java.awt.event.MouseEvent evt) {                                        
+        
+        
+        DefaultTableModel model = (DefaultTableModel)MusicStyle.getModel();        
+                
+        selectedIndex = MusicStyle.getSelectedRow();
+        
+        try {
+            nameofgenre.setText(model.getValueAt(selectedIndex, 1).toString());
+            
+        } catch (Exception e) {
+            System.out.println("error: "+e);
+        }
+        
+    }                                       
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        
+        
+        DefaultTableModel model = (DefaultTableModel)MusicStyle.getModel();        
+                
+        selectedIndex = MusicStyle.getSelectedRow();
+        
+        int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+        
+        genre=nameofgenre.getText();
+        
+        // Opening database connection
+        try {
+            //Create and get connection using DriverManager class
+            conn = DriverManager.getConnection(dbURL);
+
+            //Creating JDBC Statement
+            st = conn.createStatement();
+
+            // Step 2.C: Executing SQL &amp; retrieve data into ResultSet
+             
+            sql = "UPDATE MusicStyle SET Genre=? WHERE ID=?";
+            
+            ps = conn.prepareStatement(sql);
+            
+            ps.setString(1, genre);
+            
+            ps.setInt(2, id);
+
+            ps.executeUpdate();
+            
+            ps.close();
+            st.close();
+            conn.close();
+            System.out.println("data was inserted");
+            
+            nameofgenre.setText("");
+            
+            updateTable();
+            
+
+        }
+        catch(SQLException sqlex){
+            System.err.println(sqlex.getMessage());
+        }
+    }                                          
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        deleteGenre();
+    }                                            
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
+        
+        this.setVisible(false);
+        new MainMenu();
+        
+    }                                 
+
+    private void deleteGenre(){
+        
+        nameofgenre.setText("");
+        
+        DefaultTableModel model = (DefaultTableModel)MusicStyle.getModel();        
+                
+        selectedIndex = MusicStyle.getSelectedRow();
+        
+        try {
+            nameofgenre.setText(model.getValueAt(selectedIndex, 1).toString());
+            
+        } catch (Exception e) {
+            System.out.println("error: "+e);
+        }
+        
+        int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+        
+        // Opening database connection
+        try {
+            //Create and get connection using DriverManager class
+            conn = DriverManager.getConnection(dbURL);
+
+            //Creating JDBC Statement
+            st = conn.createStatement();
+
+            // Step 2.C: Executing SQL &amp; retrieve data into ResultSet
+             
+            sql = "DELETE FROM MusicStyle WHERE ID=?";
+            
+            ps = conn.prepareStatement(sql);
+            
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+            
+            ps.close();
+            st.close();
+            conn.close();
+            System.out.println("data was inserted");
+            
+            nameofgenre.setText(""); 
+            
+            updateTable();
+            
+
+        }
+        catch(SQLException sqlex){
+            System.err.println(sqlex.getMessage());
+        }
+        
+        
+        
+    }
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JTable MusicStyle;
+    private javax.swing.JButton addButton;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editButton;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField nameofgenre;
+    // End of variables declaration                   
+}
